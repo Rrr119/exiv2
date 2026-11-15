@@ -47,6 +47,7 @@ The file ReadMe.txt in a build bundle describes how to install the library on th
     - [Building  Exiv2 with ccache](#CCache)
     - [Thread Safety](#ThreadSafety)
     - [Library Initialisation and Cleanup](#InitAndCleanup)
+    - [Custom XMP Namespaces](#CustomXmpNamespaces)
     - [Cross Platform Build and Test on Linux for MinGW](#CrossPlatformSupport)
     - [Static and Shared Libraries](#StaticShared)
     - [Support for BMFF files (e.g., CR3, HEIF, HEIC, AVIF, and JPEG XL)](#BMFF)
@@ -682,6 +683,73 @@ The exiv2 command-line program and sample applications call the following at the
     Exiv2::XmpParser::initialize();
     ::atexit(Exiv2::XmpParser::terminate);
 ```
+
+[TOC](#TOC)
+<div id="CustomXmpNamespaces">
+
+## Custom XMP Namespaces
+
+Exiv2 supports XMP packets that use application-specific (custom) namespaces in
+addition to the standard Adobe/IPTC namespaces. A custom namespace is identified
+by a URI and referenced in XMP keys through a short prefix, e.g. the property
+`Xmp.acme.ProjectId` belongs to the prefix `acme`.
+
+### Reading and writing back
+
+When Exiv2 decodes a packet that declares a namespace it does not know, the
+namespace is registered automatically and the properties are exposed as
+ordinary, prefix-based `XmpKey` entries in `XmpData`. Encoding the same
+`XmpData` reproduces the prefix-to-URI binding from the source packet, so a
+read-modify-write round trip keeps the custom namespace, its values and its
+container types (text, bags, sequences and language alternatives):
+
+```cpp
+Exiv2::XmpData xmpData;
+Exiv2::DecodeParams params(/*maxRecursionDepth=*/500);
+Exiv2::XmpParser::decode(xmpData, xmpPacket, params);
+
+xmpData["Xmp.acme.ProjectId"] = "PRJ-43";  // modify a custom property
+
+std::string outPacket;
+Exiv2::XmpParser::encode(outPacket, xmpData);
+```
+
+The binding captured from a packet is stored on the `XmpData` instance itself,
+so two images that legitimately bind the same prefix to different URIs do not
+poison each other when they are processed in the same process.
+
+### Registering a namespace programmatically
+
+To create a property in a namespace that does not appear in a source packet,
+register the namespace first. An `XmpKey` with an unregistered prefix throws,
+because Exiv2 cannot resolve its URI:
+
+```cpp
+Exiv2::XmpProperties::registerNs("https://acme.example.com/xmp/1.0/", "acme");
+Exiv2::XmpData xmpData;
+xmpData["Xmp.acme.FreshProp"] = "hello";
+```
+
+The registration is process-global and shared with the underlying XMP Toolkit.
+Rebinding a prefix to a different URI keeps the Toolkit's internal namespace
+tables consistent, so the namespace can be re-registered later in the lifetime
+of the process. `Exiv2::XmpParser::clearCustomNamespaces()` removes all custom
+namespaces again (standard namespaces are retained); it is mainly useful for
+tests and long-running processes that want to reset registry state.
+
+### Command line
+
+The `exiv2` command uses the `reg` command to register a namespace before
+setting a property in it. The arguments are the prefix followed by the URI, and
+the registration takes effect immediately, so later commands in the same file
+or `-M` sequence can use the new prefix:
+
+```
+reg acme https://acme.example.com/xmp/1.0/
+set Xmp.acme.ProjectId PRJ-42
+```
+
+See [doc/cmdxmp.txt](doc/cmdxmp.txt) for a complete command-file example.
 
 [TOC](#TOC)
 <div id="CrossPlatformSupport">

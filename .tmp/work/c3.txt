@@ -1,0 +1,4 @@
+reg ns qq http://qq.example/1.0/
+reg ns rr http://rr.example/1.0/
+set Xmp.qq.Foo bar
+set Xmp.rr.Baz qux

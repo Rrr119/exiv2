@@ -13,6 +13,7 @@ test_sources = files(
   'test_Photoshop.cpp',
   'test_TimeValue.cpp',
   'test_XmpKey.cpp',
+  'test_xmp_custom_ns.cpp',
   'test_basicio.cpp',
   'test_bmpimage.cpp',
   'test_cr2header_int.cpp',

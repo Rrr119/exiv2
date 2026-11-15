@@ -1,0 +1,2 @@
+reg acme https://internal.example.com/xmp/acme/1.0/
+set Xmp.acme.ProjectId PRJ-99

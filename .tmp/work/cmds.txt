@@ -1,0 +1,5 @@
+reg ns acme https://internal.example.com/xmp/acme/1.0/
+set Xmp.acme.ProjectId PRJ-42
+set Xmp.acme.Tags XmpBag type=Bag
+set Xmp.acme.Tags alpha
+set Xmp.acme.Tags beta

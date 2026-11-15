@@ -564,6 +564,19 @@ void XmpParser::registerNsImpl(const std::string& ns, const std::string& prefix)
       }
     }
 
+    // The toolkit keeps two maps that must stay bidirectionally consistent:
+    //   URI -> prefix (sNamespaceURIToPrefixMap)
+    //   prefix -> URI (sNamespacePrefixToURIMap)
+    // RegisterNamespace() only overwrites the prefix -> URI entry, so when a
+    // prefix is rebound to a different URI the old URI -> prefix entry is left
+    // behind and the maps become inconsistent. A subsequent DumpNamespaces()
+    // (e.g. via registeredNamespaces()) then throws an internal XMP_Error.
+    // Delete the URI currently bound to this prefix first, if any.
+    std::string existingUri;
+    if (SXMPMeta::GetNamespaceURI(prefix.c_str(), &existingUri)) {
+      SXMPMeta::DeleteNamespace(existingUri.c_str());
+    }
+
     SXMPMeta::DeleteNamespace(ns.c_str());
 #ifdef EXV_ADOBE_XMPSDK
     SXMPMeta::RegisterNamespace(ns.c_str(), prefix.c_str(), nullptr);

@@ -213,6 +213,10 @@ class EXIV2API XmpProperties {
     If the prefix is a known or previously registered prefix, the
     corresponding namespace URI is overwritten.
 
+    The binding is synchronized with the XMP Toolkit. Rebinding a prefix to
+    a different URI keeps the Toolkit's internal namespace tables consistent,
+    so the prefix can be registered again later in the lifetime of the process.
+
     @note This invalidates XMP keys generated with the previous prefix.
    */
   static void registerNs(const std::string& ns, const std::string& prefix);

@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/dev/feedback/uid21959/.deps/gtest-build/cmake_install.cmake",
+		"/home/dev/feedback/uid21959/.deps/gtest-build/googlemock/cmake_install.cmake",
+		"/home/dev/feedback/uid21959/.deps/gtest-build/googletest/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

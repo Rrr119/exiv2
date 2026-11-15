@@ -1,0 +1,17 @@
+{
+  "root": "/home/dev/feedback/uid21959",
+  "B": "/home/dev/feedback/uid21959",
+  "sha": "dc867091784010e3a4507775ed82ef36c4770b4d",
+  "wslDistro": "Ubuntu-26.04",
+  "source": {
+    "owner": "Exiv2",
+    "repo": "exiv2",
+    "sha": "dc867091784010e3a4507775ed82ef36c4770b4d"
+  },
+  "fork": {
+    "owner": "Rrr119",
+    "repo": "exiv2",
+    "cloneUrl": "https://github.com/Rrr119/exiv2.git"
+  },
+  "at": "2026-11-15T22:56:23.891Z"
+}

@@ -343,8 +343,13 @@ class EXIV2API XmpParser {
       "automatically.")]] static void
   terminate();
   /*!
-    @brief Clear all custom namespaces registered with the XMP Toolkit.
-           This is useful for resetting the registry state in tests.
+    @brief Clear all custom namespaces registered with Exiv2.
+
+           Standard (built-in) namespaces are retained. The XMP Toolkit's own
+           namespace tables stay consistent, so a prefix cleared here can be
+           registered again with @ref XmpProperties::registerNs. This is
+           primarily useful for resetting registry state in tests and
+           long-running processes.
    */
   static void clearCustomNamespaces();
 

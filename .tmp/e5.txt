@@ -1,0 +1,10 @@
+step1 register
+step2 encode
+step3 clear
+step4 ns query
+step5 toolkit dump
+step6 re-register
+step7 build key
+step8 assign
+step9 encode
+terminate called after throwing an instance of 'XMP_Error'

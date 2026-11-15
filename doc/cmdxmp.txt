@@ -51,7 +51,10 @@ set Xmp.dc.description LangAlt Hello, World
 set Xmp.tiff.ImageDescription TIFF image description
 set Xmp.tiff.ImageDescription lang=de-DE TIFF Bildbeschreibung
 
-# Register a namespace which Exiv2 doesn't know yet with a prefix.
+# Register a namespace which Exiv2 doesn't know yet. The arguments are the
+# prefix followed by the namespace URI. Registration takes effect immediately,
+# so the custom prefix registered here can be used by the commands below in
+# the same command file (or in later -M arguments on the command line).
 reg ns myNamespace/
 
 # Add a property in the new custom namespace.
